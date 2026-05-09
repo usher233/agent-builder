@@ -1,0 +1,20 @@
+[Unit]
+Description=Langfuse observability stack (Docker Compose)
+Requires=docker.service
+After=docker.service network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory={{PROJECT_DIR}}
+ExecStartPre=-docker compose -f infra/docker-compose.langfuse.yml down --remove-orphans
+ExecStart=docker compose -f infra/docker-compose.langfuse.yml up -d --wait --wait-timeout 120
+ExecStop=docker compose -f infra/docker-compose.langfuse.yml down
+ExecStartPost=/bin/bash -c 'for i in {1..30}; do curl -s -o /dev/null http://localhost:3000 && exit 0; sleep 2; done; exit 1'
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

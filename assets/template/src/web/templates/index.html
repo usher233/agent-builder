@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{AGENT_NAME}}</title>
+    <script src="https://unpkg.com/htmx.org@2.0.3"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: system-ui, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+        #chat { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; min-height: 60vh; }
+        .msg { padding: 12px 16px; border-radius: 12px; max-width: 85%; }
+        .user { align-self: flex-end; background: #007aff; color: #fff; }
+        .agent { align-self: flex-start; background: #f0f0f0; }
+        .tool { align-self: flex-start; background: #fff3cd; font-style: italic; font-size: 0.9em; }
+        form { display: flex; gap: 8px; }
+        input { flex: 1; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; }
+        button { padding: 12px 24px; background: #007aff; color: #fff; border: none; border-radius: 8px; cursor: pointer; }
+        .thread-id { font-size: 0.8em; color: #999; margin-top: 8px; }
+    </style>
+</head>
+<body>
+    <h1>{{AGENT_NAME}}</h1>
+    <div id="chat" hx-ext="sse">
+        <!-- Messages appear here via SSE -->
+    </div>
+    <form hx-ext="sse"
+          sse-connect="/api/chat"
+          sse-swap="message"
+          hx-trigger="submit">
+        <input name="q" type="text" placeholder="Ask something..." autofocus>
+        <button type="submit">Send</button>
+    </form>
+    <div class="thread-id" id="thread-info"></div>
+</body>
+</html>

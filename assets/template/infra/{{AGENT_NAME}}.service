@@ -1,0 +1,18 @@
+[Unit]
+Description={{AGENT_NAME}} (FastAPI + Telegram Bot)
+After=network-online.target langfuse.service
+Wants=network-online.target langfuse.service
+
+[Service]
+Type=simple
+WorkingDirectory={{PROJECT_DIR}}
+EnvironmentFile={{PROJECT_DIR}}/.env
+ExecStart={{PROJECT_DIR}}/.venv/bin/python -m src.main
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier={{AGENT_NAME}}
+
+[Install]
+WantedBy=default.target
