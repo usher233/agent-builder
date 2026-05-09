@@ -26,6 +26,8 @@
 
 </div>
 
+> ⚠️ **Disclaimer / 免责声明**：本项目纯属个人业余兴趣爱好，与本人任职公司无关。This is a personal hobby project, not affiliated with or endorsed by my employer.
+
 ## 🚀 这是什么？
 
 **Agent Builder** 是 Claude Code 的一个超级 Skill。你只需要告诉 Claude 你想要什么——比如 "帮我做一个股票分析机器人"——它就会在 **30 秒内** 生成一个完整的、可以直接 `systemctl start` 的生产级 Python 项目。
@@ -273,6 +275,8 @@ sudo loginctl enable-linger $USER
 <br>
 
 </div>
+
+> ⚠️ **Disclaimer**：This is a personal hobby project, not affiliated with or endorsed by my employer. / 本项目纯属个人业余兴趣爱好，与本人任职公司无关。
 
 ## 🚀 What Is This?
 
@@ -562,5 +566,9 @@ DeepSeek ✓ · Anthropic (Claude) ✓ · OpenAI (GPT) ✓ · 任何 OpenAI 兼�
 <img src="https://img.shields.io/badge/Powered%20by-LangGraph-1C3C3C?style=flat-square&logo=langchain">
 <img src="https://img.shields.io/badge/Runs%20on-Claude%20Code-E68B2C?style=flat-square">
 <img src="https://img.shields.io/badge/Deploys%20with-systemd-E95420?style=flat-square&logo=linux">
+
+<br><br>
+
+> ⚠️ **Disclaimer / 免责声明**：本项目纯属个人业余兴趣爱好，与本人任职公司无关。This is a personal hobby project, not affiliated with or endorsed by my employer.
 
 </div>
