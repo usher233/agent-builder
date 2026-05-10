@@ -10,7 +10,7 @@
 
 <h1>🏗️ Agent Builder</h1>
 
-<h3>一个 Claude Code Skill。一句话生成一个可直接部署的生产级 AI Agent。</h3>
+<h3>一个 AI 编程助手 Skill。一句话生成一个可直接部署的生产级 AI Agent。</h3>
 <h3><em>One sentence → Production-ready AI agent. Deploy to prod with one bash script.</em></h3>
 
 <br>
@@ -30,7 +30,7 @@
 
 ## 🚀 这是什么？
 
-**Agent Builder** 是 Claude Code 的一个超级 Skill。你只需要告诉 Claude 你想要什么——比如 "帮我做一个客服机器人"——它就会在 **30 秒内** 生成一个完整的、可以直接 `systemctl start` 的生产级 Python 项目。
+**Agent Builder** 是一个 AI 编程助手的超级 Skill。你只需要用自然语言描述你想要什么——比如 "帮我做一个客服机器人"——AI 编程助手就会在 **30 秒内** 生成一个完整的、可以直接 `systemctl start` 的生产级 Python 项目。
 
 不是 demo，不是 hello-world，是真正的生产代码。**含 systemd 部署、Docker Compose 基础设施、Langfuse 全链路追踪、模块化接口（Web/Telegram/CLI）。**
 
@@ -54,7 +54,7 @@
 # 你只需要说一句话
 "Build me a customer support bot with web UI"
 
-# Claude Code 会在 30 秒内生成完整项目：
+# AI 编程助手会在 30 秒内生成完整项目：
 my-support-bot/
 ├── pyproject.toml              # uv 依赖管理
 ├── config.toml                 # LLM / Langfuse / Interfaces / Skills 配置
@@ -304,7 +304,7 @@ sudo loginctl enable-linger $USER
 
 ## 🚀 What Is This?
 
-**Agent Builder** is a Claude Code skill. Tell Claude what you want — "build me a customer support bot" — and it generates a complete, deployment-ready Python project in **under 30 seconds**.
+**Agent Builder** is an AI-powered coding skill. Tell your AI assistant what you want — "build me a customer support bot" — and it generates a complete, deployment-ready Python project in **under 30 seconds**.
 
 We're talking `systemctl start` ready. Not a demo. Not a hello-world. Production code.
 
@@ -328,7 +328,7 @@ We're talking `systemctl start` ready. Not a demo. Not a hello-world. Production
 # You say:
 "Build me a research assistant agent with Telegram bot"
 
-# Claude Code generates in 30 seconds:
+# Your AI assistant generates in 30 seconds:
 my-research-assistant/
 ├── pyproject.toml              # uv dependency management
 ├── config.toml                 # LLM / Langfuse / Interfaces / Skills config
@@ -603,13 +603,13 @@ DeepSeek ✓ · Anthropic (Claude) ✓ · OpenAI (GPT) ✓ · 任何 OpenAI 兼�
 <div align="center">
 
 <h3>Made with 🏗️ Agent Builder — by an agent, for builders</h3>
-<p><em>This Claude Code skill generates production AI agents.<br>Now it's yours. Share it. Ship it. Build something.</em></p>
+<p><em>This skill generates production AI agents from natural language.<br>Now it's yours. Share it. Ship it. Build something.</em></p>
 
 <br>
 
 <img src="https://img.shields.io/badge/Made%20with-Python-3776AB?style=flat-square&logo=python">
 <img src="https://img.shields.io/badge/Powered%20by-LangGraph-1C3C3C?style=flat-square&logo=langchain">
-<img src="https://img.shields.io/badge/Runs%20on-Claude%20Code-E68B2C?style=flat-square">
+<img src="https://img.shields.io/badge/Runs%20on-AI%20Code-E68B2C?style=flat-square">
 <img src="https://img.shields.io/badge/Deploys%20with-systemd-E95420?style=flat-square&logo=linux">
 
 <br><br>

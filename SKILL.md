@@ -1,6 +1,6 @@
 ---
 name: agent-builder
-description: Build production-ready AI agents with LangGraph, configurable LLM backends, FastAPI web UI, Telegram integration, and Langfuse observability. Use this skill whenever the user wants to build, scaffold, or create an AI agent, agentic application, chatbot with tools, or automated workflow. Trigger on phrases like "build an agent", "create a bot", "scaffold an AI app", "make an agent for ...", "I want to build something with LangGraph", or any request involving agent construction. Even if the user is unsure what to build, use this skill to guide them.
+description: Build production-ready AI agents with LangGraph, configurable LLM backends, FastAPI web UI, Telegram integration, CLI, and Langfuse observability. Works with any AI coding assistant (Claude Code, Codex, Copilot, etc.). Use this skill whenever the user wants to build, scaffold, or create an AI agent, agentic application, chatbot with tools, or automated workflow. Trigger on phrases like "build an agent", "create a bot", "scaffold an AI app", "make an agent for ...", "I want to build something with LangGraph", or any request involving agent construction. Even if the user is unsure what to build, use this skill to guide them.
 metadata:
   author: viktor
   version: "2.0.0"
