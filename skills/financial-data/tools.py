@@ -1,5 +1,17 @@
 from langchain_core.tools import tool
 
+_config = {
+    "default_market": "sh",
+}
+
+
+def get_default_config():
+    return dict(_config)
+
+
+def configure(user_config: dict):
+    _config.update({k: v for k, v in user_config.items() if k in _config})
+
 
 @tool
 def get_spot(symbol: str) -> str:

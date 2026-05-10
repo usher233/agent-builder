@@ -11,38 +11,27 @@ public_key = "${LANGFUSE_PUBLIC_KEY}"
 secret_key = "${LANGFUSE_SECRET_KEY}"
 host = "https://cloud.langfuse.com"
 
-[telegram]
-bot_token = "${TELEGRAM_BOT_TOKEN}"
+[interfaces]
+enabled = {{ENABLED_INTERFACES}}
 
-[web]
+[interfaces.web]
 host = "0.0.0.0"
 port = 8080
+
+[interfaces.telegram]
+bot_token = "${TELEGRAM_BOT_TOKEN}"
 
 [agent]
 checkpoint_db = "data/checkpoints.db"
 max_history = 50
 
 [skills]
-# Enable the skills your agent needs. Available skills are in the skills/ directory.
-# Each skill provides pre-built tools the LLM can call automatically.
 enabled = []
-# Examples:
-# enabled = ["web-search", "data-analysis"]
-# enabled = ["web-search", "file-system", "code-interpreter", "financial-data"]
 
-[skills.web-search]
-tavily_api_key = "${TAVILY_API_KEY}"
-max_results = 5
-
-[skills.file-system]
-workspace = "./workspace"
-max_file_size_mb = 10
-
-[skills.data-analysis]
-workspace = "./workspace"
-
-[skills.code-interpreter]
-timeout_seconds = 10
-
-[skills.financial-data]
-default_market = "sh"
+# Optional: override individual skill configs
+# [skills.config.web-search]
+# tavily_api_key = "${TAVILY_API_KEY}"
+# max_results = 5
+#
+# [skills.config.financial-data]
+# default_market = "sh"

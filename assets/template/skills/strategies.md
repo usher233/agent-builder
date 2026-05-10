@@ -1,6 +1,6 @@
 # Strategies & Methodology
 #
-# Replace this file with your agent's analysis/execution methodology:
+# Replace this file with your agent's methodology:
 # - Step-by-step processes
 # - Decision frameworks
 # - Worked examples
@@ -10,7 +10,7 @@
 
 # {{AGENT_NAME}} — Strategies
 
-## Analysis Methodology
+## Methodology
 <!-- Step-by-step process the agent follows -->
 
 ## Decision Framework

@@ -2,7 +2,21 @@ import json
 from pathlib import Path
 from langchain_core.tools import tool
 
-WORKSPACE = Path("./workspace")
+_config = {
+    "workspace": "./workspace",
+}
+
+
+def get_default_config():
+    return dict(_config)
+
+
+def configure(user_config: dict):
+    _config.update({k: v for k, v in user_config.items() if k in _config})
+
+
+def _get_workspace() -> Path:
+    return Path(_config["workspace"])
 
 
 @tool
@@ -11,7 +25,7 @@ def analyze_csv(path: str) -> str:
     import pandas as pd
 
     try:
-        df = pd.read_csv(WORKSPACE / path)
+        df = pd.read_csv(_get_workspace() / path)
         lines = [
             f"File: {path}",
             f"Shape: {df.shape[0]} rows x {df.shape[1]} cols",
@@ -46,9 +60,9 @@ def create_chart(path: str, spec: str) -> str:
     try:
         # Load data
         if path.endswith(".csv"):
-            df = pd.read_csv(WORKSPACE / path)
+            df = pd.read_csv(_get_workspace() / path)
         elif path.endswith((".xlsx", ".xls")):
-            df = pd.read_excel(WORKSPACE / path)
+            df = pd.read_excel(_get_workspace() / path)
         else:
             return f"Unsupported format: {path}"
 
@@ -80,7 +94,7 @@ def create_chart(path: str, spec: str) -> str:
             fig = px.line(df, x=x, y=y, color=color, title=spec.title())
 
         chart_json = fig.to_json()
-        chart_path = WORKSPACE / f"chart_{hash(spec) & 0xFFFF}.json"
+        chart_path = _get_workspace() / f"chart_{hash(spec) & 0xFFFF}.json"
         chart_path.parent.mkdir(parents=True, exist_ok=True)
         chart_path.write_text(chart_json)
 

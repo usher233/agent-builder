@@ -1,11 +1,15 @@
-"""Telegram bot integration."""
+"""Telegram bot interface."""
+import textwrap
+import logging
+
 from telegram import Update
 from telegram.ext import Application, MessageHandler, filters, ContextTypes
 from langchain_core.messages import HumanMessage
 from langfuse.callback import CallbackHandler
-import textwrap
 
 from src.config import Config
+
+logger = logging.getLogger(__name__)
 
 
 def create_bot(graph, cfg: Config) -> Application:
@@ -15,7 +19,8 @@ def create_bot(graph, cfg: Config) -> Application:
         host=cfg.langfuse.host,
     )
 
-    app = Application.builder().token(cfg.telegram.bot_token).build()
+    token = cfg.interfaces.telegram.get("bot_token", "")
+    app = Application.builder().token(token).build()
 
     async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user_input = update.message.text
@@ -37,7 +42,6 @@ def create_bot(graph, cfg: Config) -> Application:
             last_msg = result["messages"][-1]
             response = last_msg.content
 
-            # Telegram has 4096 char limit
             if len(response) > 4000:
                 chunks = textwrap.wrap(response, 4000, break_long_words=False)
                 for chunk in chunks:
@@ -50,3 +54,10 @@ def create_bot(graph, cfg: Config) -> Application:
 
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
     return app
+
+
+async def run(graph, cfg: Config) -> None:
+    """Start the Telegram bot."""
+    bot = create_bot(graph, cfg)
+    logger.info("Telegram bot started")
+    await bot.run_polling()

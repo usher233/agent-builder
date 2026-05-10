@@ -1,15 +1,33 @@
-import os
 from pathlib import Path
 from langchain_core.tools import tool
 
-WORKSPACE = Path(os.getenv("SKILLS_WORKSPACE", "./workspace")).resolve()
-MAX_FILE_SIZE = int(os.getenv("SKILLS_MAX_FILE_MB", "10")) * 1024 * 1024
+_config = {
+    "workspace": "./workspace",
+    "max_file_size_mb": 10,
+}
+
+
+def get_default_config():
+    return dict(_config)
+
+
+def configure(user_config: dict):
+    _config.update({k: v for k, v in user_config.items() if k in _config})
+
+
+def _get_workspace() -> Path:
+    return Path(_config["workspace"]).resolve()
+
+
+def _get_max_file_size() -> int:
+    return _config["max_file_size_mb"] * 1024 * 1024
 
 
 def _safe_path(user_path: str) -> Path:
     """Resolve a user-provided path within the workspace. Raises on escape attempts."""
-    resolved = (WORKSPACE / user_path).resolve()
-    if not str(resolved).startswith(str(WORKSPACE)):
+    workspace = _get_workspace()
+    resolved = (workspace / user_path).resolve()
+    if not str(resolved).startswith(str(workspace)):
         raise ValueError(f"Path traversal blocked: {user_path}")
     return resolved
 
@@ -21,8 +39,9 @@ def read_file(path: str, max_lines: int = 500) -> str:
         full_path = _safe_path(path)
         if not full_path.exists():
             return f"File not found: {path}"
-        if full_path.stat().st_size > MAX_FILE_SIZE:
-            return f"File too large (> {MAX_FILE_SIZE // 1024 // 1024} MB): {path}"
+        max_size = _get_max_file_size()
+        if full_path.stat().st_size > max_size:
+            return f"File too large (> {max_size // 1024 // 1024} MB): {path}"
 
         content = full_path.read_text(encoding="utf-8")
         lines = content.split("\n")

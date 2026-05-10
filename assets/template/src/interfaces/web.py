@@ -1,6 +1,8 @@
 """FastAPI web interface with SSE streaming."""
 import json
 import uuid
+import logging
+
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
@@ -10,13 +12,13 @@ from pathlib import Path
 
 from src.config import Config
 
-
+logger = logging.getLogger(__name__)
 templates_dir = Path(__file__).parent / "templates"
 templates = Jinja2Templates(directory=str(templates_dir))
 
 
 def create_app(graph, cfg: Config) -> FastAPI:
-    app = FastAPI(title="AI Agent")
+    app = FastAPI(title=cfg.interfaces.web.get("title", "AI Agent"))
     langfuse_handler = CallbackHandler(
         public_key=cfg.langfuse.public_key,
         secret_key=cfg.langfuse.secret_key,
@@ -64,3 +66,18 @@ def create_app(graph, cfg: Config) -> FastAPI:
             return {"error": "Thread not found", "thread_id": thread_id}
 
     return app
+
+
+async def run(graph, cfg: Config) -> None:
+    """Start the web interface."""
+    import uvicorn
+
+    web_cfg = cfg.interfaces.web
+    host = web_cfg.get("host", "0.0.0.0")
+    port = web_cfg.get("port", 8080)
+
+    app = create_app(graph, cfg)
+    config = uvicorn.Config(app, host=host, port=port)
+    server = uvicorn.Server(config)
+    logger.info("Web UI: http://%s:%s", host, port)
+    await server.serve()

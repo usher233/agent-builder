@@ -1,6 +1,6 @@
 import os
 import tomllib
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from langchain_core.language_models import BaseChatModel
 
 
@@ -22,14 +22,18 @@ class LangfuseConfig:
 
 
 @dataclass
-class TelegramConfig:
-    bot_token: str
+class InterfacesConfig:
+    enabled: list[str] = field(default_factory=lambda: ["web", "telegram"])
+    web: dict = field(default_factory=lambda: {"host": "0.0.0.0", "port": 8080})
+    telegram: dict = field(default_factory=dict)
 
-
-@dataclass
-class WebConfig:
-    host: str = "0.0.0.0"
-    port: int = 8080
+    @classmethod
+    def from_dict(cls, data: dict) -> "InterfacesConfig":
+        return cls(
+            enabled=data.get("enabled", ["web", "telegram"]),
+            web=data.get("web", {}),
+            telegram=data.get("telegram", {}),
+        )
 
 
 @dataclass
@@ -40,19 +44,26 @@ class AgentConfig:
 
 @dataclass
 class SkillsConfig:
-    enabled: list[str] = None
+    enabled: list[str] = field(default_factory=list)
+    config: dict[str, dict] = field(default_factory=dict)
 
-    def __post_init__(self):
-        if self.enabled is None:
-            self.enabled = []
+    @classmethod
+    def from_dict(cls, data: dict) -> "SkillsConfig":
+        return cls(
+            enabled=data.get("enabled", []),
+            config=data.get("config", {}),
+        )
+
+    def get_skill_config(self, skill_name: str) -> dict:
+        """Return user config for a skill, or empty dict if not set."""
+        return self.config.get(skill_name, {})
 
 
 @dataclass
 class Config:
     llm: LLMConfig
     langfuse: LangfuseConfig
-    telegram: TelegramConfig
-    web: WebConfig
+    interfaces: InterfacesConfig
     agent: AgentConfig
     skills: SkillsConfig
 
@@ -63,8 +74,7 @@ class Config:
 
         llm = data["llm"]
         langfuse = data["langfuse"]
-        telegram = data["telegram"]
-        web = data.get("web", {})
+        interfaces = data.get("interfaces", {})
         agent = data.get("agent", {})
         skills = data.get("skills", {})
 
@@ -82,20 +92,12 @@ class Config:
                 secret_key=os.path.expandvars(langfuse["secret_key"]),
                 host=langfuse.get("host", "https://cloud.langfuse.com"),
             ),
-            telegram=TelegramConfig(
-                bot_token=os.path.expandvars(telegram["bot_token"]),
-            ),
-            web=WebConfig(
-                host=web.get("host", "0.0.0.0"),
-                port=web.get("port", 8080),
-            ),
+            interfaces=InterfacesConfig.from_dict(interfaces),
             agent=AgentConfig(
                 checkpoint_db=agent.get("checkpoint_db", "data/checkpoints.db"),
                 max_history=agent.get("max_history", 50),
             ),
-            skills=SkillsConfig(
-                enabled=skills.get("enabled", []),
-            ),
+            skills=SkillsConfig.from_dict(skills),
         )
 
 

@@ -5,7 +5,17 @@ import tempfile
 from pathlib import Path
 from langchain_core.tools import tool
 
-TIMEOUT = int(os.getenv("CODE_TIMEOUT", "10"))
+_config = {
+    "timeout_seconds": 10,
+}
+
+
+def get_default_config():
+    return dict(_config)
+
+
+def configure(user_config: dict):
+    _config.update({k: v for k, v in user_config.items() if k in _config})
 
 
 @tool
@@ -24,7 +34,7 @@ def run_python(code: str) -> str:
             [sys.executable, tmp_path],
             capture_output=True,
             text=True,
-            timeout=TIMEOUT,
+            timeout=_config["timeout_seconds"],
             cwd=str(Path.cwd()),
         )
 
@@ -38,7 +48,7 @@ def run_python(code: str) -> str:
 
         return "\n".join(output) if output else "(no output)"
     except subprocess.TimeoutExpired:
-        return f"Error: code execution timed out after {TIMEOUT}s"
+        return f"Error: code execution timed out after {_config["timeout_seconds"]}s"
     except Exception as e:
         return f"Error: {e}"
     finally:

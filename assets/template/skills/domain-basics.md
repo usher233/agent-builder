@@ -1,9 +1,8 @@
 # Domain Basics
 #
 # Replace this file with your agent's domain knowledge:
-# - Market/domain mechanics
+# - Core concepts and terminology
 # - Key entities and rules
-# - Terminology glossary
 # - Common patterns and gotchas
 #
 # This file is loaded as system context by the agent at runtime.

@@ -1,8 +1,8 @@
 # Risk Management & Guardrails
 #
 # Replace this file with your agent's safety rules:
-# - Position sizing / resource limits
-# - Exit criteria / stop conditions
+# - Resource limits and boundaries
+# - Stop conditions and exit criteria
 # - Edge cases and fallbacks
 # - What the agent should NEVER do
 #
@@ -24,5 +24,5 @@
 
 ## Never Do This
 <!-- Explicitly forbidden actions -->
-- <!-- e.g. Never execute trades without confirmation -->
-- <!-- e.g. Never expose API keys in responses -->
+- <!-- e.g. Never expose API keys or credentials in responses -->
+- <!-- e.g. Never perform destructive operations without confirmation -->

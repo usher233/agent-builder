@@ -1,22 +1,35 @@
-import os
 import httpx
 from langchain_core.tools import tool
 
-TAVILY_API_KEY = os.getenv("TAVILY_API_KEY", "")
-TAVILY_URL = "https://api.tavily.com/search"
+_config = {
+    "tavily_api_key": "",
+    "max_results": 5,
+}
+
+
+def get_default_config():
+    return dict(_config)
+
+
+def configure(user_config: dict):
+    _config.update({k: v for k, v in user_config.items() if k in _config})
 
 
 @tool
-async def search_web(query: str, max_results: int = 5) -> str:
+async def search_web(query: str, max_results: int | None = None) -> str:
     """Search the web for current information. Returns titles, URLs, and text snippets."""
-    if not TAVILY_API_KEY:
-        return "Error: TAVILY_API_KEY not configured."
+    api_key = _config["tavily_api_key"]
+    if not api_key:
+        return "Error: tavily_api_key not configured in [skills.config.web-search]."
+
+    if max_results is None:
+        max_results = _config["max_results"]
 
     async with httpx.AsyncClient() as client:
         resp = await client.post(
-            TAVILY_URL,
+            "https://api.tavily.com/search",
             json={
-                "api_key": TAVILY_API_KEY,
+                "api_key": api_key,
                 "query": query,
                 "max_results": max_results,
                 "include_answer": True,
